@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import FlagGuessGameView from '@/views/FlagGuessGameView.vue'
 
 const router = createRouter({
@@ -8,7 +7,6 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      // component: HomeView,
       component: FlagGuessGameView,
     },
     // {
