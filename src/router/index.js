@@ -5,10 +5,15 @@ import GuessWithProgressiveHintsView from '@/views/GuessWithProgressiveHintsView
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: FlagGuessGameView,
+    // },
     {
       path: '/',
       name: 'home',
-      component: FlagGuessGameView,
+      component: GuessWithProgressiveHintsView,
     },
     {
       path: '/progressive-hints',

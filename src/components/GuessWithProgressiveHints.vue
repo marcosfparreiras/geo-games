@@ -59,9 +59,11 @@
       </div>
     </div> -->
     <!-- Success Modal -->
-    <div v-if="showSuccessPopup" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+
+    <div v-if="showSuccessPopup" class="fixed inset-0 z-50 flex items-center justify-center">
+      <!-- <div> -->
       <!-- Modal background click area -->
-      <div class="absolute inset-0" @click="closePopup"></div>
+      <div class="absolute inset-0 bg-black bg-opacity-50" @click="closePopup"></div>
 
       <!-- Modal box -->
       <div class="relative bg-white p-6 rounded-xl shadow-xl max-w-sm w-full z-10" @click.stop>
@@ -78,10 +80,11 @@
         <img :src="correctFlagUrl" alt="Country flag" class="mx-auto w-32 mt-4 rounded border" />
         <div class="pt-4">{{ maskedFlagDescription }}</div>
 
-        <button @click="restartGame" class="mt-6 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        <!-- <button @click="restartGame" class="mt-6 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
           Play Again
-        </button>
+        </button> -->
       </div>
+      <!-- </div> -->
     </div>
   </GamePageWrapper>
 </template>
@@ -92,10 +95,19 @@ import GamePageWrapper from './GamePageWrapper.vue';
 import { ref } from 'vue';
 import { countriesList } from '@/utils/countriesList';
 
+// const props = defineProps(() => {
+//   countryInfo: Object
+// })
+
+const props = defineProps([
+  'countryInfo'
+])
+
+
 const currentHintIndex = ref(0)
 const currentGuess = ref('')
 const guesses = ref([])
-const showSuccessPopup = ref(true)
+const showSuccessPopup = ref(false)
 
 function closePopup() {
   showSuccessPopup.value = false
@@ -115,10 +127,8 @@ function submitGuess() {
 
   // Check if it's correct
   if (trimmed.toLowerCase() === correctAnswer.toLowerCase()) {
-    console.log('right')
     showSuccessPopup.value = true
   } else {
-    console.log('wrong')
     revealNextHint()
   }
 
@@ -154,10 +164,11 @@ const countriesWithFlagDescription = countriesList.filter((country) => country.f
 // Every country is a valid guess
 const validCountryNames = countriesList.map((country) => country.name.common).sort()
 
-const seed = 2
-const countryData = countriesWithFlagDescription[seed]
+// const seed = 2
+// const countryData = countriesWithFlagDescription[seed]
+const countryData = props.countryInfo
 
-console.log(countryData)
+// console.log(countryData)
 const correctAnswer = countryData.name.common
 const correctFlagUrl = countryData.flags.png
 // const correctFlagUrl = 'https://flagcdn.com/w320/it.png'
@@ -191,20 +202,22 @@ const countryLngHemisphere = countryData.capitalInfo.latlng[1] < 0 ? 'Western' :
 const countryCapitals = countryData.capital
 const countryCapitalsStr = countryCapitals.length == 1 ? `is ${countryCapitals[0]}` : `are ${countryCapitals.join(', ')}`
 
-console.log(countryData)
+// console.log(countryData)
 
 
 
 const hints = [
   `It borders ${borderCountriesStr}`,
   `It has a population of ${formatPopulation(countryData.population)} people`,
-  `It's part of ${countryData.region}`,
-  `It's part of ${countryData.subregion}`,
+
 
   // South/North Hemisfere
   `It's in the ${countryLatHemisphere} Hemisphere`,
   // Western/Eastern part of the globe
   `It's in the ${countryLngHemisphere} Hemisphere`,
+
+  `It's part of ${countryData.region}`,
+  `It's part of ${countryData.subregion}`,
 
 
   // Languages
