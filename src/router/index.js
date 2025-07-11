@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import FlagGuessGameView from '@/views/FlagGuessGameView.vue'
+import GuessWithProgressiveHintsView from '@/views/GuessWithProgressiveHintsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: FlagGuessGameView,
+    },
+    {
+      path: '/progressive-hints',
+      name: 'GuessWithProgressiveHints',
+      component: GuessWithProgressiveHintsView,
     },
     // {
     //   path: '/about',
