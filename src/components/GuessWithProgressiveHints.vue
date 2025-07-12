@@ -5,12 +5,12 @@
     <p>{{ maskedFlagDescription }}</p>
 
     <!-- Hint Progression -->
-    <div class="pt-8 mx-auto space-y-4">
+    <div class="pt-4 mx-auto space-y-4">
       <h2 class="text-xl font-semibold text-center">Hints</h2>
 
       <ul class="space-y-2">
         <li v-for="(hint, index) in hints" :key="index"
-          class="p-3 rounded bg-gray-100 border border-gray-300 text-sm text-gray-700">
+          class="p-1 rounded bg-gray-100 border border-gray-300 text-sm text-gray-700">
           <span v-if="index < currentHintIndex">
             {{ hint }}
           </span>
