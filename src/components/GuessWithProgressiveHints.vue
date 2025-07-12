@@ -1,8 +1,15 @@
 <template>
   <GamePageWrapper>
-    <h1 class="text-2xl font-bold mb-4">Guess the country from its flag's description using the fewest hints as
-      possible. Good luck!</h1>
-    <p>{{ maskedFlagDescription }}</p>
+    <div v-if="!showFlag">
+      <h1 class="text-2xl font-bold mb-4">Guess the country from its flag's description using the fewest hints as
+        possible. Good luck!</h1>
+      <p>{{ maskedFlagDescription }}</p>
+    </div>
+    <div v-else>
+      <h1 class="text-2xl font-bold mb-4">Guess the country from its flag's using the fewest hints as
+        possible. Good luck!</h1>
+      <img :src="correctFlagUrl" alt="Country flag" class="mx-auto w-50 mt-4 rounded border" />
+    </div>
 
     <!-- Hint Progression -->
     <div class="pt-4 mx-auto space-y-4">
@@ -95,13 +102,17 @@ import GamePageWrapper from './GamePageWrapper.vue';
 import { ref } from 'vue';
 import { countriesList } from '@/utils/countriesList';
 
-// const props = defineProps(() => {
-//   countryInfo: Object
-// })
+// import type { PropType } from 'vue'
 
-const props = defineProps([
-  'countryInfo'
-])
+
+const props = defineProps({
+  countryInfo: { type: Object },
+  showFlag: { type: Boolean, default: false }
+})
+
+// const props = defineProps([
+//   'countryInfo'
+// ])
 
 
 const currentHintIndex = ref(0)

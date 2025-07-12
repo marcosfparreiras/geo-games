@@ -13,12 +13,12 @@ const router = createRouter({
     // },
     {
       path: '/',
-      name: 'home',
-      component: GuessWithProgressiveHintsView,
+      name: 'HomePage',
+      component: HomePageView,
     },
     {
       path: '/new-home',
-      name: 'HomePageView',
+      name: 'NewHomePage',
       component: HomePageView,
     },
     {

@@ -1,5 +1,5 @@
 <template>
-  <GuessWithProgressiveHints :countryInfo="countryInfo" />
+  <GuessWithProgressiveHints :countryInfo="countryInfo" :showFlag="showFlag" />
 </template>
 
 <script setup>
@@ -11,11 +11,18 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 
 const route = useRoute()
 const countryInfo = ref('')
+const showFlag = ref(false)
 
 // Vue components lifecycle (and hooks): https://vuejs.org/guide/essentials/lifecycle
 // onMounted(() => {
 onBeforeMount(() => {
   const queryParamContinent = route.query.continent
+  const queryParamShowFlag = route.query.showFlag
+
+  if (queryParamShowFlag == 'true') showFlag.value = true
+  // console.log(queryParamShowFlag)
+  // console.log(queryParamShowFlag == 'true')
+
   countryInfo.value = selectCountry(queryParamContinent)
 
   // console.log(countryInfo.value.name.common)
