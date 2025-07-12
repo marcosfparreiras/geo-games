@@ -21,7 +21,7 @@ The most important fields I believe I would need:
 - name, cca3 (code), region, subregion, borders, population, timezones, continents, flags, capitalInfo
 - the request for that:
   - https://restcountries.com/v3.1/all?fields=name,cca3,region,subregion,borders,population,timezones,continents,flags,capitalInfo
-  - https://restcountries.com/v3.1/all?fields=name,cca3,region,subregion,borders,population,currencies,languages,flags,capitalInfo
+  - https://restcountries.com/v3.1/all?fields=name,cca3,region,subregion,borders,population,languages,flags,capitalInfo,capital
 
 This is a full response for a given country:
 
