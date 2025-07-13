@@ -1,16 +1,17 @@
 <template>
-  <div class="p-4 max-w-2xl mx-auto">
+  <GamePageWrapper>
     <h2 class="text-xl font-bold mb-4 text-center">Match the Flags — Balkans Edition</h2>
 
     <div class="space-y-4">
       <div v-for="(item, index) in flagAssignments" :key="item.code"
-        class="flex items-center gap-4 flex-col sm:flex-row">
+        class="flex justify-start items-center gap-6 flex-col sm:flex-row p-4 rounded-xl border-1 border-gray-300 bg-gray-50">
         <img :src="`https://flagcdn.com/w160/${item.code.toLowerCase()}.png`" :alt="item.code"
           class="w-28 rounded shadow" />
 
-        <div class="flex items-center gap-2 w-full sm:w-64">
+        <div class="flex items-center gap-2 flex-1">
           <select v-model="selections[index]" @change="updateAvailableOptions"
-            class="w-full p-2 border border-gray-300 rounded">
+            class="flex-1 p-2 border border-gray-300 rounded bg-white">
+
             <option :value="null" disabled selected>— Select Country —</option>
             <option v-for="country in availableOptions(index)" :key="country.code" :value="country.code">
               {{ country.name }}
@@ -19,14 +20,12 @@
 
           <!-- ❌ Clear Button -->
           <button v-if="selections[index] !== null" @click="clearSelection(index)"
-            class="text-red-500 hover:text-red-700 text-xl" title="Clear selection">
+            class="text-red-500 hover:text-red-700 hover:cursor-pointer text-xl " title="Clear selection">
             ❌
           </button>
         </div>
       </div>
     </div>
-
-
 
     <div class="mt-6 text-center">
       <button @click="checkAnswers" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -38,11 +37,12 @@
       <p v-if="allCorrect" class="text-green-600">🎉 All answers are correct!</p>
       <p v-else class="text-red-600">Some answers are incorrect. Try again!</p>
     </div>
-  </div>
+  </GamePageWrapper>
 </template>
 
 <script setup>
 import { ref, computed, reactive } from 'vue'
+import GamePageWrapper from './GamePageWrapper.vue'
 
 // Initial dataset: Balkans
 const countries = [
