@@ -3,6 +3,25 @@
     <h2 class="text-xl font-bold mb-4 text-center">Match the Flags — Balkans Edition</h2>
 
     <div class="space-y-4">
+
+      <div v-if="totalTries" class="text-md text-gray-600 mt-2 flex justify-center  border-blue-200  space-x-2">
+        <div class="border-1 w-full py-1 rounded-2xl border-green-400">
+          <p>
+            🏆 <strong>Best Score: {{ bestScore }} / {{ total }}</strong>
+          </p>
+          <p>
+            You played {{ totalTries }} times
+          </p>
+        </div>
+
+        <div class="border-1 w-full py-1 rounded-2xl border-green-400">
+          <p>
+            <strong>Current score</strong>
+
+          </p>
+          {{ lastScore }}/{{ countries.length }} ({{ lastScore / countries.length * 100 }} %)
+        </div>
+      </div>
       <!-- <div v-for="(item, index) in flagAssignments" :key="item.code"
         class="flex justify-start items-center gap-6 flex-col sm:flex-row p-4 rounded-xl border-1 border-gray-300 bg-gray-50"> -->
 
@@ -52,9 +71,21 @@
         Check Answers
       </button> -->
 
-      <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" @click="showResultModal">
-        Check Answers
-      </button>
+      <template v-if="!showResult">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" @click="showResultModal">
+          Check Answers
+        </button>
+      </template>
+
+      <template v-else>
+        <h2 class="text-xl font-semibold mb-2">Your Score</h2>
+        <p class="text-2xl font-bold text-green-600">{{ correctCount }} / {{ total }}</p>
+        <p class="text-gray-700 mt-1">{{ percentage }}% correct</p>
+
+        <button @click="resetGame" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Play Again
+        </button>
+      </template>
     </div>
 
     <div v-if="showResult" class="mt-6 text-center font-medium">
@@ -76,9 +107,13 @@
         <p class="text-2xl font-bold text-green-600">{{ correctCount }} / {{ total }}</p>
         <p class="text-gray-700 mt-1">{{ percentage }}% correct</p>
 
+        <p class="text-sm text-gray-600 mt-1">
+          🏆 Best Score: {{ bestScore }} / {{ total }}
+        </p>
+
         <div class="flex flex-col justify-center sm:flex-row gap-2 mt-4">
           <button @click="closeModal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
-            Close
+            See Results
           </button>
           <button @click="resetGame" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Play Again
@@ -90,7 +125,7 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted, watch } from 'vue'
 import GamePageWrapper from './GamePageWrapper.vue'
 
 // Initial dataset: Balkans
@@ -106,6 +141,38 @@ const countries = [
   { name: "Serbia", code: "RS" },
   { name: "Slovenia", code: "SI" },
 ]
+const bestScore = ref(0)
+const lastScore = ref(0)
+const totalTries = ref(0)
+
+onMounted(() => {
+  const stored = localStorage.getItem('balkan-best-score')
+  if (stored) {
+    bestScore.value = parseInt(stored, 10)
+  }
+
+  const totalTriesStored = localStorage.getItem('balkan-total-tries')
+  if (totalTriesStored) {
+    totalTries.value = parseInt(totalTriesStored)
+  }
+
+  const lastScoreStored = localStorage.getItem('balkan-last-score')
+  if (lastScoreStored) {
+    lastScore.value = parseInt(lastScoreStored)
+  }
+})
+
+watch(bestScore, (newScore) => {
+  localStorage.setItem('balkan-best-score', newScore)
+})
+
+watch(totalTries, (newTotalTries) => {
+  localStorage.setItem('balkan-total-tries', newTotalTries)
+})
+
+watch(lastScore, (newLastScore) => {
+  localStorage.setItem('balkan-last-score', newLastScore)
+})
 
 // Shuffle array
 function shuffle(array) {
@@ -187,9 +254,18 @@ const percentage = computed(() => {
 const showResultModal = () => {
   showResult.value = true
   modalVisible.value = true
+
+  if (correctCount.value > bestScore.value) {
+    bestScore.value = correctCount.value
+  }
+
+  totalTries.value = totalTries.value + 1
+  lastScore.value = correctCount.value
 }
 
 const closeModal = () => {
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' })
   modalVisible.value = false
 }
 
@@ -199,6 +275,9 @@ const getCountryName = (code) => {
 }
 
 const resetGame = () => {
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+
   // Reshuffle the assignments
   flagAssignments.splice(0, flagAssignments.length, ...shuffle([...countries]).slice(0, flagAssignments.length))
 
