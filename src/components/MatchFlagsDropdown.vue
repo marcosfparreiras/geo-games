@@ -63,7 +63,7 @@
     </div>
 
     <!-- Modal Overlay -->
-    <div v-if="modalVisible" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    <div v-if="modalVisible" class="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center z-50"
       @click.self="closeModal">
       <!-- Modal Content -->
       <div class="bg-white rounded-xl p-6 shadow-lg w-11/12 max-w-sm text-center relative">
@@ -76,9 +76,14 @@
         <p class="text-2xl font-bold text-green-600">{{ correctCount }} / {{ total }}</p>
         <p class="text-gray-700 mt-1">{{ percentage }}% correct</p>
 
-        <button @click="closeModal" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Close
-        </button>
+        <div class="flex flex-col justify-center sm:flex-row gap-2 mt-4">
+          <button @click="closeModal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
+            Close
+          </button>
+          <button @click="resetGame" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Play Again
+          </button>
+        </div>
       </div>
     </div>
   </GamePageWrapper>
@@ -191,6 +196,18 @@ const closeModal = () => {
 const getCountryName = (code) => {
   const match = countries.find((c) => c.code === code)
   return match ? match.name : null
+}
+
+const resetGame = () => {
+  // Reshuffle the assignments
+  flagAssignments.splice(0, flagAssignments.length, ...shuffle([...countries]).slice(0, flagAssignments.length))
+
+  // Reset all selections
+  selections.value = Array(flagAssignments.length).fill(null)
+
+  // Hide result UI
+  showResult.value = false
+  modalVisible.value = false
 }
 
 
