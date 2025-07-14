@@ -1,9 +1,6 @@
 // File used to centralized constants shared accross the project
 
-// This is a file to structure some utils methods needed accross the project
-export function buildUrl(baseUrl, relativePath) {
-  return new URL(relativePath, baseUrl).toString()
-}
+import { buildUrl } from './utils'
 
 export const WEBSITE_DOMAIN = 'geoflagger.netlify.app/'
 export const WEBSITE_URL_HTTPS = `https://${WEBSITE_DOMAIN}`

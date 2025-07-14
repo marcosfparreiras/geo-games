@@ -33,19 +33,15 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { MATCH_FLAG_GAME_URL } from '@/utils/constants'
 
-const correctCount = ref(5) // pass real score from parent if needed
-const total = ref(6)        // pass real total from parent if needed
+const props = defineProps({
+  shareMessage: String
+})
 
 const toastVisible = ref(false)
 
-// const websiteUrl = 'https://yourgame.com' // update this to your real site
-const websiteUrl = MATCH_FLAG_GAME_URL// update this to your real site
-
 const getShareMessage = () => {
-  return `I scored ${correctCount.value}/${total.value} on the Balkans Flag Challenge! 🇷🇸🇧🇦🇭🇷
-Think you can beat me? Try it here: ${websiteUrl}`
+  return props.shareMessage
 }
 
 const whatsappShareLink = computed(() => {

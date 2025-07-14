@@ -3,27 +3,28 @@
     <h2 class="text-xl font-bold mb-4 text-center">Match the Flags — Balkans Edition</h2>
 
     <div class="space-y-3">
+      <template v-if="totalTries">
+        <div class="text-md text-gray-600 mt-2 flex justify-center  border-blue-200  space-x-2">
+          <div class="border-1 w-full py-1 rounded-2xl border-green-400">
+            <p>
+              🏆 <strong>Best Score: {{ bestScore }} / {{ total }}</strong>
+            </p>
+            <p>
+              You played {{ totalTries }} times
+            </p>
+          </div>
 
-      <div v-if="totalTries" class="text-md text-gray-600 mt-2 flex justify-center  border-blue-200  space-x-2">
-        <div class="border-1 w-full py-1 rounded-2xl border-green-400">
-          <p>
-            🏆 <strong>Best Score: {{ bestScore }} / {{ total }}</strong>
-          </p>
-          <p>
-            You played {{ totalTries }} times
-          </p>
+          <div class="border-1 w-full py-1 rounded-2xl border-green-400">
+            <p>
+              <strong>Last score</strong>
+            </p>
+            {{ lastScore }}/{{ countries.length }} ({{ Math.floor(lastScore / countries.length * 100) }} %)
+          </div>
+
+
         </div>
-
-        <div class="border-1 w-full py-1 rounded-2xl border-green-400">
-          <p>
-            <strong>Current score</strong>
-          </p>
-          {{ lastScore }}/{{ countries.length }} ({{ lastScore / countries.length * 100 }} %)
-        </div>
-
-
-      </div>
-      <ChallengeFriends />
+        <ChallengeFriends :shareMessage="shareMessage" />
+      </template>
       <!-- <div v-for="(item, index) in flagAssignments" :key="item.code"
         class="flex justify-start items-center gap-6 flex-col sm:flex-row p-4 rounded-xl border-1 border-gray-300 bg-gray-50"> -->
 
@@ -105,7 +106,7 @@
     <div v-if="modalVisible" class="fixed inset-0 bg-[rgba(0,0,0,0.5)] flex items-center justify-center z-50"
       @click.self="closeModal">
       <!-- Modal Content -->
-      <div class="bg-white rounded-xl p-6 shadow-lg w-11/12 max-w-sm text-center relative">
+      <div class="bg-white rounded-xl p-6 shadow-lg w-11/12 max-w-xl text-center relative">
         <button class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl" @click="closeModal"
           title="Close">
           ❌
@@ -119,7 +120,7 @@
           🏆 Best Score: {{ bestScore }} / {{ total }}
         </p>
 
-        <ChallengeFriends />
+        <ChallengeFriends :shareMessage="shareMessage" />
         <div class="flex flex-col justify-center sm:flex-row gap-2 mt-4">
           <button @click="closeModal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
             See Results
@@ -139,6 +140,8 @@ import { ref, computed, reactive, onMounted, watch } from 'vue'
 import GamePageWrapper from './GamePageWrapper.vue'
 import ChallengeFriends from './ChallengeFriends.vue'
 
+import { MATCH_FLAG_GAME_URL } from '@/utils/constants'
+
 // Initial dataset: Balkans
 const countries = [
   { name: "Albania", code: "AL" },
@@ -146,6 +149,7 @@ const countries = [
   { name: "Bulgaria", code: "BG" },
   { name: "Croatia", code: "HR" },
   { name: "Greece", code: "GR" },
+  { name: "Kosovo", code: "XK" },
   { name: "Montenegro", code: "ME" },
   { name: "North Macedonia", code: "MK" },
   { name: "Romania", code: "RO" },
@@ -185,28 +189,13 @@ watch(lastScore, (newLastScore) => {
   localStorage.setItem('balkan-last-score', newLastScore)
 })
 
-const websiteUrl = 'https://yourgame.com' // change to your real domain
-const whatsappShareLink = computed(() => {
+// Constants used to share game with friends
+const gameUrl = MATCH_FLAG_GAME_URL // change this when it uses query param for the balkans game
+const shareMessage = computed(() => {
   const message = `I scored ${correctCount.value}/${total.value} on the Balkans Flag Challenge! 🇷🇸🇧🇦🇭🇷
-Think you can beat me? Try it here: ${websiteUrl}`
-  return `https://wa.me/?text=${encodeURIComponent(message)}`
+Think you can beat me? Try it here: ${gameUrl}`
+  return message
 })
-
-const toastVisible = ref(false)
-const getShareMessage = () => {
-  return `I scored ${correctCount.value}/${total.value} on the Balkans Flag Challenge! 🇷🇸🇧🇦🇭🇷
-Think you can beat me? Try it here: ${websiteUrl}`
-}
-
-const copyToClipboard = async () => {
-  try {
-    await navigator.clipboard.writeText(getShareMessage())
-    toastVisible.value = true
-    setTimeout(() => (toastVisible.value = false), 2000)
-  } catch (err) {
-    alert('❌ Failed to copy')
-  }
-}
 
 // Shuffle array
 function shuffle(array) {
