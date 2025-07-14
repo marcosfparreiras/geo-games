@@ -14,7 +14,7 @@
         <img :src="`https://flagcdn.com/w160/${item.code.toLowerCase()}.png`" :alt="item.code"
           class="w-28 rounded shadow" />
 
-        <div class="flex items-center gap-2 flex-1">
+        <div class="flex items-center gap-2 w-full sm:flex-1">
           <template v-if="!showResult">
             <!-- SELECT UI (before checking answers) -->
             <select v-model="selections[index]" @change="updateAvailableOptions"
