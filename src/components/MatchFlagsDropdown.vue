@@ -20,7 +20,10 @@
           </p>
           {{ lastScore }}/{{ countries.length }} ({{ lastScore / countries.length * 100 }} %)
         </div>
+
+
       </div>
+      <ChallengeFriends />
       <!-- <div v-for="(item, index) in flagAssignments" :key="item.code"
         class="flex justify-start items-center gap-6 flex-col sm:flex-row p-4 rounded-xl border-1 border-gray-300 bg-gray-50"> -->
 
@@ -65,7 +68,7 @@
       </div>
     </div>
 
-    <div class="mt-6 text-center">
+    <div class="mt-6 mb-15 text-center">
       <!-- <button @click="checkAnswers" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
         Check Answers
       </button> -->
@@ -88,6 +91,7 @@
           <button @click="resetGame" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             Play Again
           </button>
+
         </div>
       </template>
     </div>
@@ -115,6 +119,7 @@
           🏆 Best Score: {{ bestScore }} / {{ total }}
         </p>
 
+        <ChallengeFriends />
         <div class="flex flex-col justify-center sm:flex-row gap-2 mt-4">
           <button @click="closeModal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
             See Results
@@ -123,6 +128,7 @@
             Play Again
           </button>
         </div>
+
       </div>
     </div>
   </GamePageWrapper>
@@ -131,6 +137,7 @@
 <script setup>
 import { ref, computed, reactive, onMounted, watch } from 'vue'
 import GamePageWrapper from './GamePageWrapper.vue'
+import ChallengeFriends from './ChallengeFriends.vue'
 
 // Initial dataset: Balkans
 const countries = [
@@ -177,6 +184,29 @@ watch(totalTries, (newTotalTries) => {
 watch(lastScore, (newLastScore) => {
   localStorage.setItem('balkan-last-score', newLastScore)
 })
+
+const websiteUrl = 'https://yourgame.com' // change to your real domain
+const whatsappShareLink = computed(() => {
+  const message = `I scored ${correctCount.value}/${total.value} on the Balkans Flag Challenge! 🇷🇸🇧🇦🇭🇷
+Think you can beat me? Try it here: ${websiteUrl}`
+  return `https://wa.me/?text=${encodeURIComponent(message)}`
+})
+
+const toastVisible = ref(false)
+const getShareMessage = () => {
+  return `I scored ${correctCount.value}/${total.value} on the Balkans Flag Challenge! 🇷🇸🇧🇦🇭🇷
+Think you can beat me? Try it here: ${websiteUrl}`
+}
+
+const copyToClipboard = async () => {
+  try {
+    await navigator.clipboard.writeText(getShareMessage())
+    toastVisible.value = true
+    setTimeout(() => (toastVisible.value = false), 2000)
+  } catch (err) {
+    alert('❌ Failed to copy')
+  }
+}
 
 // Shuffle array
 function shuffle(array) {
