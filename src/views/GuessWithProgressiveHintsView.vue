@@ -13,6 +13,9 @@ const route = useRoute()
 const countryInfo = ref('')
 const showFlag = ref(false)
 
+// TODO: Update route and component to use route param instead of a query param
+// Source: https://router.vuejs.org/guide/essentials/dynamic-matching
+
 // Vue components lifecycle (and hooks): https://vuejs.org/guide/essentials/lifecycle
 // onMounted(() => {
 onBeforeMount(() => {

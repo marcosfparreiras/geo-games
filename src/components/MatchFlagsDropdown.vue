@@ -1,13 +1,14 @@
 <template>
   <GamePageWrapper>
-    <h2 class="text-xl font-bold mb-4 text-center">Match the Flags — Balkans Edition</h2>
+    <h1 class="text-2xl font-bold text-center">Match the Flags</h1>
+    <h2 class="text-xl font-bold mb-4 text-center text-gray-500">{{ subGameTitle }}</h2>
 
     <div class="space-y-3">
       <template v-if="totalTries">
         <div class="text-md text-gray-600 mt-2 flex justify-center  border-blue-200  space-x-2">
           <div class="border-1 w-full py-1 rounded-2xl border-green-400">
             <p>
-              🏆 <strong>Best Score: {{ bestScore }} / {{ total }}</strong>
+              🏆 <strong>Your Best Score: {{ bestScore }} / {{ total }}</strong>
             </p>
             <p>
               You played {{ totalTries }} times
@@ -16,7 +17,7 @@
 
           <div class="border-1 w-full py-1 rounded-2xl border-green-400">
             <p>
-              <strong>Last score</strong>
+              <strong>Your Last Score</strong>
             </p>
             {{ lastScore }}/{{ countries.length }} ({{ Math.floor(lastScore / countries.length * 100) }} %)
           </div>
@@ -142,57 +143,60 @@ import ChallengeFriends from './ChallengeFriends.vue'
 
 import { MATCH_FLAG_GAME_URL } from '@/utils/constants'
 
-// Initial dataset: Balkans
-const countries = [
-  { name: "Albania", code: "AL" },
-  { name: "Bosnia and Herzegovina", code: "BA" },
-  { name: "Bulgaria", code: "BG" },
-  { name: "Croatia", code: "HR" },
-  { name: "Greece", code: "GR" },
-  { name: "Kosovo", code: "XK" },
-  { name: "Montenegro", code: "ME" },
-  { name: "North Macedonia", code: "MK" },
-  { name: "Romania", code: "RO" },
-  { name: "Serbia", code: "RS" },
-  { name: "Slovenia", code: "SI" },
-]
+const props = defineProps({
+  countries: Array, // List of objects with { name:, code: }
+  subGameSlug: String,
+  subGameTitle: String,
+  subGameShareName: String
+})
+
+const sortedCountries = ref([...props.countries].sort((a, b) =>
+  a.name.localeCompare(b.name)
+))
+
+// Define variables that will use local storage persistency
 const bestScore = ref(0)
 const lastScore = ref(0)
 const totalTries = ref(0)
 
+const localStoragePrefix = `game:matchTheFlag;subgame:${props.subGameSlug};var:`
+const bestScoreLocalStorageKey = `${localStoragePrefix}bestScore`
+const totalTriesLocalStorageKey = `${localStoragePrefix}totalTries`
+const lastScoreLocalStorageKey = `${localStoragePrefix}lastScore`
+
 onMounted(() => {
-  const stored = localStorage.getItem('balkan-best-score')
+  const stored = localStorage.getItem(bestScoreLocalStorageKey)
   if (stored) {
     bestScore.value = parseInt(stored, 10)
   }
 
-  const totalTriesStored = localStorage.getItem('balkan-total-tries')
+  const totalTriesStored = localStorage.getItem(totalTriesLocalStorageKey)
   if (totalTriesStored) {
     totalTries.value = parseInt(totalTriesStored)
   }
 
-  const lastScoreStored = localStorage.getItem('balkan-last-score')
+  const lastScoreStored = localStorage.getItem(lastScoreLocalStorageKey)
   if (lastScoreStored) {
     lastScore.value = parseInt(lastScoreStored)
   }
 })
 
 watch(bestScore, (newScore) => {
-  localStorage.setItem('balkan-best-score', newScore)
+  localStorage.setItem(bestScoreLocalStorageKey, newScore)
 })
 
 watch(totalTries, (newTotalTries) => {
-  localStorage.setItem('balkan-total-tries', newTotalTries)
+  localStorage.setItem(totalTriesLocalStorageKey, newTotalTries)
 })
 
 watch(lastScore, (newLastScore) => {
-  localStorage.setItem('balkan-last-score', newLastScore)
+  localStorage.setItem(lastScoreLocalStorageKey, newLastScore)
 })
 
 // Constants used to share game with friends
 const gameUrl = MATCH_FLAG_GAME_URL // change this when it uses query param for the balkans game
 const shareMessage = computed(() => {
-  const message = `I scored ${correctCount.value}/${total.value} on the Balkans Flag Challenge! 🇷🇸🇧🇦🇭🇷
+  const message = `I scored ${correctCount.value}/${total.value} on the ${props.subGameShareName}.
 Think you can beat me? Try it here: ${gameUrl}`
   return message
 })
@@ -203,7 +207,7 @@ function shuffle(array) {
 }
 
 // Assign shuffled countries to flag list
-const flagAssignments = shuffle(countries)
+const flagAssignments = shuffle([...props.countries])
 
 // Track user selections
 const selections = ref(Array(flagAssignments.length).fill(null))
@@ -225,7 +229,8 @@ const allCorrect = computed(() =>
 // Returns country options not yet selected (except the one already selected at this index)
 const availableOptions = (index) => {
   const selectedSet = new Set(selections.value.filter((val, i) => i !== index && val !== null))
-  return countries.filter((c) => !selectedSet.has(c.code) || selections.value[index] === c.code)
+  // return props.countries.filter((c) => !selectedSet.has(c.code) || selections.value[index] === c.code)
+  return sortedCountries.value.filter((c) => !selectedSet.has(c.code) || selections.value[index] === c.code)
 }
 
 const updateBlockStyles = () => {
@@ -241,16 +246,16 @@ const updateBlockStyles = () => {
 
 const updateAvailableOptions = () => {
   showResult.value = false
-  console.log('-- Flags ')
-  console.log(flagAssignments)
+  // console.log('-- Flags ')
+  // console.log(flagAssignments)
 
-  console.log('-- Selections ')
-  console.log(selections.value)
+  // console.log('-- Selections ')
+  // console.log(selections.value)
 
 
 
   updateBlockStyles()
-  console.log(blockStyle)
+  // console.log(blockStyle)
 }
 
 const checkAnswers = () => {
@@ -293,7 +298,7 @@ const closeModal = () => {
 }
 
 const getCountryName = (code) => {
-  const match = countries.find((c) => c.code === code)
+  const match = props.countries.find((c) => c.code === code)
   return match ? match.name : null
 }
 
@@ -302,7 +307,7 @@ const resetGame = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 
   // Reshuffle the assignments
-  flagAssignments.splice(0, flagAssignments.length, ...shuffle([...countries]).slice(0, flagAssignments.length))
+  flagAssignments.splice(0, flagAssignments.length, ...shuffle([...props.countries]).slice(0, flagAssignments.length))
 
   // Reset all selections
   selections.value = Array(flagAssignments.length).fill(null)
