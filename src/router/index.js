@@ -3,6 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import GuessWithProgressiveHintsView from '@/views/GuessWithProgressiveHintsView.vue'
 import HomePageView from '@/views/HomePageView.vue'
 import MatchTheFlagView from '@/views/MatchTheFlagView.vue'
+import MatchTheFlagOverviewView from '@/views/MatchTheFlagOverviewView.vue'
+
+import GameSelection from '@/components/GameSelection.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,8 +33,8 @@ const router = createRouter({
     // TODO: change this route to point to an overview of the the Match The Flag games
     {
       path: '/match-flag',
-      name: 'MatchTheFlag',
-      component: MatchTheFlagView,
+      name: 'MatchTheFlagOverview',
+      component: MatchTheFlagOverviewView,
     },
     // See docs fos passing route param as props to component:
     // - https://router.vuejs.org/guide/essentials/dynamic-matching
@@ -41,6 +44,11 @@ const router = createRouter({
       name: 'MatchTheFlag',
       component: MatchTheFlagView,
       props: true,
+    },
+    {
+      path: '/playground',
+      name: 'Playground',
+      component: GameSelection,
     },
     // {
     //   path: '/about',

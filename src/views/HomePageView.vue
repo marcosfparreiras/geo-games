@@ -1,6 +1,6 @@
 <template>
   <GamePageWrapper>
-    <h1 class="text-3xl font-bold mb-4">Choose you next Challenge!</h1>
+    <PageTitle>Choose you next Challenge!</PageTitle>
 
     <!-- Outer wrapper for game -->
     <div class="w-full mt-6 bg-green-50 rounded-md py-4 border-l-4 border-green-400">
@@ -57,4 +57,5 @@
 
 <script setup>
 import GamePageWrapper from '@/components/GamePageWrapper.vue';
+import PageTitle from '@/components/PageTitle.vue';
 </script>
