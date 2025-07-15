@@ -7,12 +7,14 @@
 // import MatchFlagsGame from '@/components/MatchFlagsGame.vue';
 import MatchFlagsDropdown from '@/components/MatchFlagsDropdown.vue';
 
-import { useRoute } from 'vue-router'
-import { onBeforeMount, ref } from 'vue';
+import { ref } from 'vue';
 
-const route = useRoute()
+const props = defineProps({
+  subGameSlug: String
+
+})
+
 const countries = ref([])
-const subGameSlug = ref('')
 const subGameTitle = ref('')
 const subGameShareName = ref('')
 
@@ -29,7 +31,7 @@ const balkansCountries = [
   { name: "Serbia", code: "RS" },
   { name: "Slovenia", code: "SI" },
 ]
-const balkansSubGameSlug = 'balkans'
+// const balkansSubGameSlug = 'balkans'
 const balkansTitle = 'Balkans'
 const balkansChallengeShareName = 'Balkans Flag Challenge! 🇷🇸🇧🇦🇭🇷🇦🇱'
 
@@ -45,35 +47,21 @@ const trickyColoursWhiteBlueRedCountries = [
 
   // { name: "Czechia", code: "CZE" },
 ]
-const trickyColoursWhiteBlueRedSubGameSlug = 'trickyColoursWhiteBlueRed'
+// const trickyColoursWhiteBlueRedSubGameSlug = 'trickyColoursWhiteBlueRed'
 const trickyColoursWhiteBlueRedSubGameTitle = 'White-Blue-Red Flags'
 const trickyColoursWhiteBlueRedSubGameShareName = 'Tricky White/Blue/Red Flag Challenge! 🇫🇷🇷🇸🇨🇿🇷🇺'
 
 
-// const countries = balkansCountries
-// const subGameSlug = balkansSubGameSlug
-// const subGameTitle = balkansTitle
+if (props.subGameSlug == 'balkans') {
+  countries.value = balkansCountries
+  subGameTitle.value = balkansTitle
+  subGameShareName.value = balkansChallengeShareName
+}
+else if (props.subGameSlug == 'white-blue-red') {
+  countries.value = trickyColoursWhiteBlueRedCountries
+  subGameTitle.value = trickyColoursWhiteBlueRedSubGameTitle
+  subGameShareName.value = trickyColoursWhiteBlueRedSubGameShareName
+}
 
-// Vue components lifecycle (and hooks): https://vuejs.org/guide/essentials/lifecycle
-onBeforeMount(() => {
-  // const queryParamSubGame = route.query.subgame
-  const queryParamSubGame = route.params.subgameSlug
-
-  if (queryParamSubGame == 'balkans') {
-    countries.value = balkansCountries
-    subGameSlug.value = balkansSubGameSlug
-    subGameTitle.value = balkansTitle
-    subGameShareName.value = balkansChallengeShareName
-  }
-  else if (queryParamSubGame == 'white-blue-red') {
-    countries.value = trickyColoursWhiteBlueRedCountries
-    subGameSlug.value = trickyColoursWhiteBlueRedSubGameSlug
-    subGameTitle.value = trickyColoursWhiteBlueRedSubGameTitle
-    subGameShareName.value = trickyColoursWhiteBlueRedSubGameShareName
-  }
-
-
-  // console.log(countryInfo.value.name.common)
-})
 
 </script>

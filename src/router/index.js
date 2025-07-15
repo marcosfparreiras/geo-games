@@ -34,9 +34,10 @@ const router = createRouter({
       component: MatchTheFlagView,
     },
     {
-      path: '/match-flag/:subgameSlug',
+      path: '/match-flag/:subGameSlug',
       name: 'MatchTheFlag',
       component: MatchTheFlagView,
+      props: true,
     },
     // {
     //   path: '/about',
