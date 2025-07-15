@@ -179,7 +179,6 @@ const validCountryNames = countriesList.map((country) => country.name.common).so
 // const countryData = countriesWithFlagDescription[seed]
 const countryData = props.countryInfo
 
-// console.log(countryData)
 const correctAnswer = countryData.name.common
 const correctFlagUrl = countryData.flags.png
 // const correctFlagUrl = 'https://flagcdn.com/w320/it.png'
@@ -212,10 +211,6 @@ const countryLngHemisphere = countryData.capitalInfo.latlng[1] < 0 ? 'Western' :
 
 const countryCapitals = countryData.capital
 const countryCapitalsStr = countryCapitals.length == 1 ? `is ${countryCapitals[0]}` : `are ${countryCapitals.join(', ')}`
-
-// console.log(countryData)
-
-
 
 const hints = [
   `It borders ${borderCountriesStr}`,

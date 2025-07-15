@@ -7,7 +7,8 @@
 // import MatchFlagsGame from '@/components/MatchFlagsGame.vue';
 import MatchFlagsDropdown from '@/components/MatchFlagsDropdown.vue';
 import { countriesListCca2 } from '../utils/countriesListCca2';
-import { countryGroupCollection } from '@/utils/countryGroups';
+// import { countryGroupCollection } from '@/utils/countryGroups';
+import countryGroupsAll from '@/utils/countryGroupsAll';
 import { MATCH_FLAG_GAME_URL } from '@/utils/constants';
 import { buildUrl } from '@/utils/utils';
 
@@ -23,7 +24,7 @@ const subGameTitle = ref('')
 const subGameShareName = ref('')
 
 // Selects country group from the subGameSlug
-const countryGroup = countryGroupCollection.get(props.subGameSlug)
+const countryGroup = countryGroupsAll.get(props.subGameSlug)
 
 // Gets all data available for those countries only
 const countriesForGame = countriesListCca2.filter((countryData) => countryGroup.countryCodes.includes(countryData.cca2))
@@ -47,7 +48,7 @@ for (const country of countriesForGame) {
 }
 
 // countries.value = balkansCountries
-subGameTitle.value = countryGroup.name
+subGameTitle.value = countryGroup.groupName
 subGameShareName.value = `Match the Flag Challenge | ${countryGroup.groupName} ${countryGroup.shareMessageSuffix}`
 
 // Define full URL to be shared with friends.
