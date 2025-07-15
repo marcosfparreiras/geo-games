@@ -56,7 +56,8 @@ const trickyColoursWhiteBlueRedSubGameShareName = 'Tricky White/Blue/Red Flag Ch
 
 // Vue components lifecycle (and hooks): https://vuejs.org/guide/essentials/lifecycle
 onBeforeMount(() => {
-  const queryParamSubGame = route.query.subgame
+  // const queryParamSubGame = route.query.subgame
+  const queryParamSubGame = route.params.subgameSlug
 
   if (queryParamSubGame == 'balkans') {
     countries.value = balkansCountries

@@ -27,8 +27,14 @@ const router = createRouter({
       name: 'GuessWithProgressiveHints',
       component: GuessWithProgressiveHintsView,
     },
+    // TODO: change this route to point to an overview of the the Match The Flag games
     {
       path: '/match-flag',
+      name: 'MatchTheFlag',
+      component: MatchTheFlagView,
+    },
+    {
+      path: '/match-flag/:subgameSlug',
       name: 'MatchTheFlag',
       component: MatchTheFlagView,
     },
