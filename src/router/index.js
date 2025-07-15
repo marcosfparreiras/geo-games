@@ -33,6 +33,9 @@ const router = createRouter({
       name: 'MatchTheFlag',
       component: MatchTheFlagView,
     },
+    // See docs fos passing route param as props to component:
+    // - https://router.vuejs.org/guide/essentials/dynamic-matching
+    // - https://router.vuejs.org/guide/essentials/passing-props
     {
       path: '/match-flag/:subGameSlug',
       name: 'MatchTheFlag',

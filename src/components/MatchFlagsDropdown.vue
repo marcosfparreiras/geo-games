@@ -33,9 +33,7 @@
         :class="['flex justify-start items-center gap-6 flex-col sm:flex-row p-3 rounded-xl border-1', blockStyle[index]]"
         @change="updateAvailableOptions">
 
-
-        <img :src="`https://flagcdn.com/w160/${item.code.toLowerCase()}.png`" :alt="item.code"
-          class="w-28 rounded shadow" />
+        <img :src="item.flagUrl" :alt="item.code" class="w-28 rounded shadow" />
 
         <div class="flex items-center gap-2 w-full sm:flex-1">
           <template v-if="!showResult">
@@ -141,13 +139,12 @@ import { ref, computed, reactive, onMounted, watch } from 'vue'
 import GamePageWrapper from './GamePageWrapper.vue'
 import ChallengeFriends from './ChallengeFriends.vue'
 
-import { MATCH_FLAG_GAME_URL } from '@/utils/constants'
-
 const props = defineProps({
   countries: Array, // List of objects with { name:, code: }
   subGameSlug: String,
   subGameTitle: String,
-  subGameShareName: String
+  subGameShareName: String,
+  gameUrl: String
 })
 
 const sortedCountries = ref([...props.countries].sort((a, b) =>
@@ -193,11 +190,10 @@ watch(lastScore, (newLastScore) => {
   localStorage.setItem(lastScoreLocalStorageKey, newLastScore)
 })
 
-// Constants used to share game with friends
-const gameUrl = MATCH_FLAG_GAME_URL // change this when it uses query param for the balkans game
+// Message used to share game with friends
 const shareMessage = computed(() => {
   const message = `I scored ${correctCount.value}/${total.value} on the ${props.subGameShareName}.
-Think you can beat me? Try it here: ${gameUrl}`
+Think you can beat me? Try it here: ${props.gameUrl}`
   return message
 })
 

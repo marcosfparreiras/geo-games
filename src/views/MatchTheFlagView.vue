@@ -1,67 +1,59 @@
 <template>
   <MatchFlagsDropdown :countries="countries" :subGameSlug="subGameSlug" :subGameTitle="subGameTitle"
-    :subGameShareName="subGameShareName" />
+    :subGameShareName="subGameShareName" :gameUrl="gameUrl" />
 </template>
 
 <script setup>
 // import MatchFlagsGame from '@/components/MatchFlagsGame.vue';
 import MatchFlagsDropdown from '@/components/MatchFlagsDropdown.vue';
+import { countriesListCca2 } from '../utils/countriesListCca2';
+import { countryGroupCollection } from '@/utils/countryGroups';
+import { MATCH_FLAG_GAME_URL } from '@/utils/constants';
+import { buildUrl } from '@/utils/utils';
 
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const props = defineProps({
   subGameSlug: String
 
 })
-
 const countries = ref([])
 const subGameTitle = ref('')
 const subGameShareName = ref('')
 
-const balkansCountries = [
-  { name: "Albania", code: "AL" },
-  { name: "Bosnia and Herzegovina", code: "BA" },
-  { name: "Bulgaria", code: "BG" },
-  { name: "Croatia", code: "HR" },
-  { name: "Greece", code: "GR" },
-  { name: "Kosovo", code: "XK" },
-  { name: "Montenegro", code: "ME" },
-  { name: "North Macedonia", code: "MK" },
-  { name: "Romania", code: "RO" },
-  { name: "Serbia", code: "RS" },
-  { name: "Slovenia", code: "SI" },
-]
-// const balkansSubGameSlug = 'balkans'
-const balkansTitle = 'Balkans'
-const balkansChallengeShareName = 'Balkans Flag Challenge! 🇷🇸🇧🇦🇭🇷🇦🇱'
+// Selects country group from the subGameSlug
+const countryGroup = countryGroupCollection.get(props.subGameSlug)
 
-const trickyColoursWhiteBlueRedCountries = [
-  { name: "France", code: "FR" },
-  { name: "Czechia", code: "CZ" },
-  { name: "Luxemburg", code: "LU" },
-  { name: "Netherlands", code: "NL" },
-  { name: "Serbia", code: "RS" },
-  { name: "Slovenia", code: "SI" },
-  { name: "Russia", code: "RU" },
+// Gets all data available for those countries only
+const countriesForGame = countriesListCca2.filter((countryData) => countryGroup.countryCodes.includes(countryData.cca2))
 
-
-  // { name: "Czechia", code: "CZE" },
-]
-// const trickyColoursWhiteBlueRedSubGameSlug = 'trickyColoursWhiteBlueRed'
-const trickyColoursWhiteBlueRedSubGameTitle = 'White-Blue-Red Flags'
-const trickyColoursWhiteBlueRedSubGameShareName = 'Tricky White/Blue/Red Flag Challenge! 🇫🇷🇷🇸🇨🇿🇷🇺'
-
-
-if (props.subGameSlug == 'balkans') {
-  countries.value = balkansCountries
-  subGameTitle.value = balkansTitle
-  subGameShareName.value = balkansChallengeShareName
+// Abstraction for the country data that will be used for the game
+class CountryData {
+  constructor(name, code, flagUrl) {
+    this.name = name
+    this.code = code
+    this.flagUrl = flagUrl
+  }
 }
-else if (props.subGameSlug == 'white-blue-red') {
-  countries.value = trickyColoursWhiteBlueRedCountries
-  subGameTitle.value = trickyColoursWhiteBlueRedSubGameTitle
-  subGameShareName.value = trickyColoursWhiteBlueRedSubGameShareName
+
+// Prepare the data needed for the game
+for (const country of countriesForGame) {
+  const countryName = country.name.common
+  const countryCode = country.cca2
+  const countryFlagUrl = country.flags.png
+
+  countries.value.push(new CountryData(countryName, countryCode, countryFlagUrl))
 }
+
+// countries.value = balkansCountries
+subGameTitle.value = countryGroup.name
+subGameShareName.value = `Match the Flag Challenge | ${countryGroup.groupName} ${countryGroup.shareMessageSuffix}`
+
+// Define full URL to be shared with friends.
+// In case full path (including queryParams is needed, use route.fullPath instead)
+const route = useRoute()
+const gameUrl = buildUrl(MATCH_FLAG_GAME_URL, route.path)
 
 
 </script>
