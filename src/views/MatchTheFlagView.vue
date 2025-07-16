@@ -4,10 +4,8 @@
 </template>
 
 <script setup>
-// import MatchFlagsGame from '@/components/MatchFlagsGame.vue';
 import MatchFlagsDropdown from '@/components/MatchFlagsDropdown.vue';
 import { countriesListCca2 } from '../utils/countriesListCca2';
-// import { countryGroupCollection } from '@/utils/countryGroups';
 import countryGroupsAll from '@/utils/countryGroupsAll';
 import { MATCH_FLAG_GAME_URL } from '@/utils/constants';
 import { buildUrl } from '@/utils/utils';
@@ -15,7 +13,7 @@ import { buildUrl } from '@/utils/utils';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import { cca2ToFlagEmoji } from '@/utils/utils';
+import { cca2ListToFlagEmojiString } from '@/utils/utils';
 
 const props = defineProps({
   subGameSlug: String
@@ -49,12 +47,12 @@ for (const country of countriesForGame) {
   countries.value.push(new CountryData(countryName, countryCode, countryFlagUrl))
 }
 
-let emojiFlags = ''
-for (const country of countriesForGame) { emojiFlags = emojiFlags.concat(cca2ToFlagEmoji(country.cca2)) }
+// Build the name of the game to be shared, including the flags suffix
+const maxFlagsLength = 6
+const cca2List = countriesForGame.map((country) => country.cca2)
+const emojiFlags = cca2ListToFlagEmojiString(cca2List, maxFlagsLength)
 
-// countries.value = balkansCountries
 subGameTitle.value = countryGroup.groupName
-// subGameShareName.value = `Match the Flag Challenge | ${countryGroup.groupName} ${countryGroup.shareMessageSuffix}`
 subGameShareName.value = `Match the Flag Challenge | ${countryGroup.groupName} ${emojiFlags}`
 
 // Define full URL to be shared with friends.

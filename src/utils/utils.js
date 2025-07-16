@@ -18,10 +18,17 @@ export function shuffleArray(array) {
 // "BR" → '🇧' + '🇷' → 🇧🇷
 //
 // These special regional symbols have Unicode code points starting at U+1F1E6, which corresponds to 'A'.
-
 export function cca2ToFlagEmoji(cca2) {
   const UNICODE_STARTING_VALUE = 0x1f1a5
   return [...cca2.toUpperCase()]
     .map((char) => String.fromCodePoint(char.charCodeAt(0) + UNICODE_STARTING_VALUE))
     .join('')
+}
+
+export function cca2ListToFlagEmojiString(cca2List, maxLength = undefined) {
+  let emojiFlagsString = ''
+  for (const cca2 of cca2List.slice(0, maxLength)) {
+    emojiFlagsString = emojiFlagsString.concat(cca2ToFlagEmoji(cca2))
+  }
+  return emojiFlagsString
 }
