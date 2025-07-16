@@ -140,7 +140,7 @@ import GamePageWrapper from './GamePageWrapper.vue'
 import ChallengeFriends from './ChallengeFriends.vue'
 
 const props = defineProps({
-  countries: Array, // List of objects with { name:, code: }
+  countries: Array, // List of CountryData
   subGameSlug: String,
   subGameTitle: String,
   subGameShareName: String,

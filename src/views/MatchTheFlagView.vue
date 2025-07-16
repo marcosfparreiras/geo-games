@@ -15,6 +15,8 @@ import { buildUrl } from '@/utils/utils';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 
+import { cca2ToFlagEmoji } from '@/utils/utils';
+
 const props = defineProps({
   subGameSlug: String
 
@@ -47,9 +49,13 @@ for (const country of countriesForGame) {
   countries.value.push(new CountryData(countryName, countryCode, countryFlagUrl))
 }
 
+let emojiFlags = ''
+for (const country of countriesForGame) { emojiFlags = emojiFlags.concat(cca2ToFlagEmoji(country.cca2)) }
+
 // countries.value = balkansCountries
 subGameTitle.value = countryGroup.groupName
-subGameShareName.value = `Match the Flag Challenge | ${countryGroup.groupName} ${countryGroup.shareMessageSuffix}`
+// subGameShareName.value = `Match the Flag Challenge | ${countryGroup.groupName} ${countryGroup.shareMessageSuffix}`
+subGameShareName.value = `Match the Flag Challenge | ${countryGroup.groupName} ${emojiFlags}`
 
 // Define full URL to be shared with friends.
 // In case full path (including queryParams is needed, use route.fullPath instead)

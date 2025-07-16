@@ -16,7 +16,8 @@
 
           <div class="p-4">
             <h2 class="text-xl font-semibold">{{ mode.name }}</h2>
-            <p class="text-gray-500 text-sm mt-1">{{ mode.category }}</p>
+            <p class="text-gray-500 text-sm font-semibold mt-0">{{ mode.flagsUrls.length }} items</p>
+            <p class="text-gray-500 text-sm mt-2">{{ mode.category }}</p>
           </div>
 
           <!-- <div v-if="groupInfo.bestScore == 3" class="text-center font-semibold p-4 bg-lime-200"> -->
