@@ -93,7 +93,8 @@ const blackRedYellowCountryGroup = new CountryGroup(
   blackRedYellowShareMessageSuffix,
 )
 
-coutryGroupsByColorSet.add(blackRedYellowCountryGroup)
+// TODO: get better set of flags to fit this grup and then add it
+// coutryGroupsByColorSet.add(blackRedYellowCountryGroup)
 
 //------------------------------------------------
 //------------- Green/Red/White (Pan-Italian / Latin Influence)

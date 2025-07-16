@@ -1,8 +1,10 @@
 <template>
   <!-- <div class="grid grid-cols-3 gap-1 w-40 h-30 overflow-hidden rounded shadow-inner"> -->
   <!-- <div class="grid grid-cols-3 gap-1 overflow-hidden rounded shadow-inner"> -->
-  <div class="grid grid-cols-3 gap-1 overflow-hidden rounded shadow-inner">
-    <img v-for="(flag, index) in flagsSample" :key="index" :src="flag" alt="flag" class="w-full h-full object-cover" />
+  <div class="h-40">
+    <div class="grid grid-cols-3 gap-1 overflow-hidden rounded shadow-inner">
+      <img v-for="(flag, index) in flagsSample" :key="index" :src="flag" alt="flag" class="w-full object-cover h-20" />
+    </div>
   </div>
 </template>
 
