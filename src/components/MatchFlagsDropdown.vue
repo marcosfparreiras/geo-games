@@ -1,6 +1,9 @@
 <template>
   <GamePageWrapper>
-    <h1 class="text-2xl font-bold text-center">Match the Flags</h1>
+    <h1 @click="goToGameOverviewPage"
+      class="text-2xl font-bold text-center inline-block mx-auto hover:text-gray-500 hover:cursor-pointer">
+      Match the Flags
+    </h1>
     <h2 class="text-xl font-bold mb-4 text-center text-gray-500">{{ subGameTitle }}</h2>
 
     <div class="space-y-3">
@@ -138,6 +141,10 @@
 import { ref, computed, reactive, onMounted, watch } from 'vue'
 import GamePageWrapper from './GamePageWrapper.vue'
 import ChallengeFriends from './ChallengeFriends.vue'
+
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps({
   countries: Array, // List of CountryData
@@ -312,6 +319,12 @@ const resetGame = () => {
   showResult.value = false
   modalVisible.value = false
 }
+
+// function goToGameOverviewPage
+
+const goToGameOverviewPage = () => {
+  router.push({ name: 'MatchTheFlagOverview' });
+};
 
 
 
