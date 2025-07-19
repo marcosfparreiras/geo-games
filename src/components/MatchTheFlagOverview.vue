@@ -10,6 +10,8 @@
 
 
           <!-- <img :src="mode.image" alt="" class="w-full h-40 object-cover" /> -->
+          <!-- <img v-if="mode.slug == 'balkans'" src="/balcans_map_image.png" />
+          <FlagCollage v-else :flags="mode.flagsUrls" /> -->
           <FlagCollage :flags="mode.flagsUrls" />
           <!-- <FlagCollage v-if="mode.flags" :flags="mode.flagsUrls" />
                 <img v-else :src="mode.image" alt="" class="w-full h-40 object-cover" /> -->
@@ -43,6 +45,10 @@ import { countriesListCca2 } from '@/utils/countriesListCca2';
 import coutryGroupsByRegion from '@/utils/countryGroupsByRegion';
 import coutryGroupsByColorSet from '@/utils/countryGroupsByColorSet';
 
+import LocalStorageDB from '@/utils/localStorageDB'
+import { GameStats } from '@/utils/gameStats';
+
+
 const router = useRouter();
 
 const groupsInfos = ref([])
@@ -59,7 +65,14 @@ class SubGameCardInfo {
   }
 }
 
-const gameName = 'matchTheFlag'
+import { gamesInfo } from '@/utils/constants';
+
+const topic = gamesInfo.MATCH_THE_FLAG.topic
+// const gameName = gamesInfo.MATCH_THE_FLAG.name
+const gameSlug = gamesInfo.MATCH_THE_FLAG.slug
+
+const localStorageDB = new LocalStorageDB()
+
 
 // const localStoragePrefix = `game:${gameName};subgame:${props.subGameSlug};var:`
 // const localStoragePrefix = `game:${gameName};subgame:${props.subGameSlug};var:`
@@ -81,7 +94,9 @@ onMounted(() => {
   const subGamesByRegion = []
   const subGamesByColourSet = []
 
+  let gameStats
   let countryGroupsCollection
+  let localStorageKey
 
   // Build games per region
   countryGroupsCollection = coutryGroupsByRegion
@@ -89,11 +104,17 @@ onMounted(() => {
     const groupCountriesInfo = countriesListCca2.filter((countryInfo) => countryGroup.countryCodes.includes(countryInfo.cca2))
     const countryGroupFlags = groupCountriesInfo.map((countryInfo) => countryInfo.flags.svg)
 
+    localStorageKey = localStorageDB.buildSubGameKey(topic, gameSlug, countryGroup.groupSlug)
+    const gameStatsStored = localStorageDB.get(localStorageKey)
 
-    const bestScore = getLocalStorageGameInfo(gameName, countryGroup.groupSlug, 'bestScore')
-    const totalTries = getLocalStorageGameInfo(gameName, countryGroup.groupSlug, 'totalTries')
+    gameStats = new GameStats()
+    if (gameStatsStored) {
+      gameStats.lastScore = gameStatsStored.lastScore
+      gameStats.bestScore = gameStatsStored.bestScore
+      gameStats.totalTries = gameStatsStored.totalTries
+    }
 
-    const subGameCardInfo = new SubGameCardInfo(countryGroup.groupSlug, countryGroup.groupName, countryGroupsCollection.collectionName, countryGroupFlags, bestScore, totalTries)
+    const subGameCardInfo = new SubGameCardInfo(countryGroup.groupSlug, countryGroup.groupName, countryGroupsCollection.collectionName, countryGroupFlags, gameStats.bestScore, gameStats.totalTries)
     subGamesByRegion.push(subGameCardInfo)
   }
 
@@ -103,10 +124,17 @@ onMounted(() => {
     const groupCountriesInfo = countriesListCca2.filter((countryInfo) => countryGroup.countryCodes.includes(countryInfo.cca2))
     const countryGroupFlags = groupCountriesInfo.map((countryInfo) => countryInfo.flags.svg)
 
-    const bestScore = getLocalStorageGameInfo(gameName, countryGroup.groupSlug, 'bestScore')
-    const totalTries = getLocalStorageGameInfo(gameName, countryGroup.groupSlug, 'totalTries')
+    localStorageKey = localStorageDB.buildSubGameKey(topic, gameSlug, countryGroup.groupSlug)
+    const gameStatsStored = localStorageDB.get(localStorageKey)
 
-    const subGameCardInfo = new SubGameCardInfo(countryGroup.groupSlug, countryGroup.groupName, countryGroupsCollection.collectionName, countryGroupFlags, bestScore, totalTries)
+    gameStats = new GameStats()
+    if (gameStatsStored) {
+      gameStats.lastScore = gameStatsStored.lastScore
+      gameStats.bestScore = gameStatsStored.bestScore
+      gameStats.totalTries = gameStatsStored.totalTries
+    }
+
+    const subGameCardInfo = new SubGameCardInfo(countryGroup.groupSlug, countryGroup.groupName, countryGroupsCollection.collectionName, countryGroupFlags, gameStats.bestScore, gameStats.totalTries)
     subGamesByColourSet.push(subGameCardInfo)
   }
 

@@ -1,6 +1,6 @@
 <template>
-  <MatchFlagsDropdown :countries="countries" :subGameSlug="subGameSlug" :subGameTitle="subGameTitle"
-    :subGameShareName="subGameShareName" :gameUrl="gameUrl" />
+  <MatchFlagsDropdown :countries="countries" :topic="topic" :gameTitle="gameTitle" :gameSlug="gameSlug"
+    :subGameSlug="subGameSlug" :subGameTitle="subGameTitle" :subGameShareName="subGameShareName" :gameUrl="gameUrl" />
 </template>
 
 <script setup>
@@ -10,18 +10,31 @@ import countryGroupsAll from '@/utils/countryGroupsAll';
 import { MATCH_FLAG_GAME_URL } from '@/utils/constants';
 import { buildUrl } from '@/utils/utils';
 
-import { ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { cca2ListToFlagEmojiString } from '@/utils/utils';
 
+import { gamesInfo } from '@/utils/constants';
+
+
 const props = defineProps({
   subGameSlug: String
-
 })
 const countries = ref([])
 const subGameTitle = ref('')
 const subGameShareName = ref('')
+
+const gameTopic = ref('')
+const gameTitle = ref('')
+const gameSlug = ref('')
+
+
+onBeforeMount(() => {
+  gameTopic.value = gamesInfo.MATCH_THE_FLAG.topic
+  gameTitle.value = gamesInfo.MATCH_THE_FLAG.title
+  gameSlug.value = gamesInfo.MATCH_THE_FLAG.slug
+})
 
 // Selects country group from the subGameSlug
 const countryGroup = countryGroupsAll.get(props.subGameSlug)

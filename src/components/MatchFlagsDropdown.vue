@@ -2,7 +2,8 @@
   <GamePageWrapper>
     <h1 @click="goToGameOverviewPage"
       class="text-2xl font-bold text-center inline-block mx-auto hover:text-gray-500 hover:cursor-pointer">
-      Match the Flags
+      <!-- Match the Flags -->
+      {{ props.gameTitle }}
     </h1>
     <h2 class="text-xl font-bold mb-4 text-center text-gray-500">{{ subGameTitle }}</h2>
 
@@ -77,7 +78,7 @@
       </button> -->
 
       <template v-if="!showResult">
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" @click="showResultModal">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" @click="checkResult">
           Check Answers
         </button>
       </template>
@@ -144,15 +145,30 @@ import ChallengeFriends from './ChallengeFriends.vue'
 
 import { useRouter } from 'vue-router'
 
+import { GameStats } from '@/utils/gameStats'
+
+import LocalStorageDB from '@/utils/localStorageDB'
+
+
+
 const router = useRouter()
 
 const props = defineProps({
   countries: Array, // List of CountryData
+  topic: String,
+  gameSlug: String,
+  gameTitle: String,
   subGameSlug: String,
   subGameTitle: String,
   subGameShareName: String,
   gameUrl: String
 })
+
+const localStorageDB = new LocalStorageDB()
+const localStorageKey = localStorageDB.buildSubGameKey(props.topic, props.gameSlug, props.subGameSlug)
+
+// This varaible will hold the statistics of the game
+let gameStats = new GameStats()
 
 const sortedCountries = ref([...props.countries].sort((a, b) =>
   a.name.localeCompare(b.name)
@@ -162,40 +178,34 @@ const sortedCountries = ref([...props.countries].sort((a, b) =>
 const bestScore = ref(0)
 const lastScore = ref(0)
 const totalTries = ref(0)
-
-const localStoragePrefix = `game:matchTheFlag;subgame:${props.subGameSlug};var:`
-const bestScoreLocalStorageKey = `${localStoragePrefix}bestScore`
-const totalTriesLocalStorageKey = `${localStoragePrefix}totalTries`
-const lastScoreLocalStorageKey = `${localStoragePrefix}lastScore`
+const gameSize = props.countries.length
 
 onMounted(() => {
-  const stored = localStorage.getItem(bestScoreLocalStorageKey)
-  if (stored) {
-    bestScore.value = parseInt(stored, 10)
-  }
-
-  const totalTriesStored = localStorage.getItem(totalTriesLocalStorageKey)
-  if (totalTriesStored) {
-    totalTries.value = parseInt(totalTriesStored)
-  }
-
-  const lastScoreStored = localStorage.getItem(lastScoreLocalStorageKey)
-  if (lastScoreStored) {
-    lastScore.value = parseInt(lastScoreStored)
+  const gameStatsStored = localStorageDB.get(localStorageKey)
+  if (gameStatsStored) {
+    bestScore.value = gameStatsStored.bestScore
+    lastScore.value = gameStatsStored.lastScore
+    totalTries.value = gameStatsStored.totalTries
   }
 })
 
-watch(bestScore, (newScore) => {
-  localStorage.setItem(bestScoreLocalStorageKey, newScore)
-})
+const checkResult = () => {
+  gameStats.lastScore = correctCount.value
+  gameStats.gameSize = gameSize
+  gameStats.incrementTotalTries()
+  gameStats.updateBestScore()
 
-watch(totalTries, (newTotalTries) => {
-  localStorage.setItem(totalTriesLocalStorageKey, newTotalTries)
-})
+  localStorageDB.set(localStorageKey, gameStats)
 
-watch(lastScore, (newLastScore) => {
-  localStorage.setItem(lastScoreLocalStorageKey, newLastScore)
-})
+  bestScore.value = gameStats.bestScore
+  lastScore.value = gameStats.lastScore
+  totalTries.value = gameStats.totalTries
+
+  showResult.value = true
+  modalVisible.value = true
+
+
+}
 
 // Message used to share game with friends
 const shareMessage = computed(() => {
@@ -282,17 +292,6 @@ const percentage = computed(() => {
   return Math.round((correctCount.value / total.value) * 100)
 })
 
-const showResultModal = () => {
-  showResult.value = true
-  modalVisible.value = true
-
-  if (correctCount.value > bestScore.value) {
-    bestScore.value = correctCount.value
-  }
-
-  totalTries.value = totalTries.value + 1
-  lastScore.value = correctCount.value
-}
 
 const closeModal = () => {
   // Scroll to top

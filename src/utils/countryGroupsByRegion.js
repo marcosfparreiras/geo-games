@@ -75,5 +75,41 @@ shareMessageSuffix = '🇷🇸🇧🇦🇭🇷🇦🇱' // TODO: get real exampl
 countryGrop = new CountryGroup(name, slug, countries, shareMessageSuffix)
 coutryGroupsByRegion.add(countryGrop)
 
+//------------------------------------------------
+//------------- Western Europe
+//------------------------------------------------
+name = 'Western Europe'
+slug = 'western-europe'
+countries = countriesListCca2
+  .filter((country) => country.subregion == 'Western Europe')
+  .map((country) => country.cca2)
+  .sort()
+countryGrop = new CountryGroup(name, slug, countries)
+coutryGroupsByRegion.add(countryGrop)
+
+//------------------------------------------------
+//------------- Central Europe
+//------------------------------------------------
+name = 'Central Europe'
+slug = 'central-europe'
+countries = countriesListCca2
+  .filter((country) => country.subregion == 'Central Europe')
+  .map((country) => country.cca2)
+  .sort()
+countryGrop = new CountryGroup(name, slug, countries)
+coutryGroupsByRegion.add(countryGrop)
+
+//------------------------------------------------
+//------------- Northern Europe
+//------------------------------------------------
+name = 'Northern Europe'
+slug = 'northern-europe'
+countries = countriesListCca2
+  .filter((country) => country.subregion == 'Northern Europe')
+  .map((country) => country.cca2)
+  .sort()
+countryGrop = new CountryGroup(name, slug, countries)
+coutryGroupsByRegion.add(countryGrop)
+
 //--- Export groupcollection
 export default coutryGroupsByRegion
