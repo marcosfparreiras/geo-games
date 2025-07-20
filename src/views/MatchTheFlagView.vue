@@ -1,5 +1,5 @@
 <template>
-  <MatchFlagsDropdown :countries="countries" :topic="topic" :gameTitle="gameTitle" :gameSlug="gameSlug"
+  <MatchFlagsDropdown :countries="countries" :topic="gameTopic" :gameTitle="gameTitle" :gameSlug="gameSlug"
     :subGameSlug="subGameSlug" :subGameTitle="subGameTitle" :subGameShareName="subGameShareName" :gameUrl="gameUrl" />
 </template>
 
