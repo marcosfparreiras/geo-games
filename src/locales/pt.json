@@ -3,6 +3,9 @@
     "hello": "Hello",
     "game": "Game"
   },
+  "navBar": {
+    "home": "Página Inicial"
+  },
   "games": {
     "shared": {
       "bestScoreMessage": "Seu melhor resultado",
@@ -45,7 +48,7 @@
     "viaWhatsapp": "Compartilhe via Whatsapp",
     "copyChallengeLInk": "Copiar Link do Desafio",
     "linkCopied": "Link copiado!",
-    "shareMessage": "Eu pontuei {points} no {challengeName}. \nAcha que consegue me superar? Tente aqui: {gameUrl}"
+    "shareMessage": "Eu fiz {points} no {challengeName}. \nAcha que consegue me superar? Tente aqui: {gameUrl}"
   },
   "challengeTypes": {
     "perRegion": "Desafios por Regiões",

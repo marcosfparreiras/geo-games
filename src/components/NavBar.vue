@@ -11,11 +11,11 @@
 
         <div class="flex space-x-6 text-lg font-bold text-gray-500 ">
           <router-link :to="{ name: 'HomePage' }" class="flex items-center">
-            <span class="hover:text-gray-700 hover:scale-103">Home</span>
+            <span class="hover:text-gray-700 hover:scale-103">{{ $t('navBar.home') }}</span>
           </router-link>
 
           <router-link :to="{ name: 'MatchTheFlagOverview' }" class="flex items-center">
-            <span class="hover:text-gray-700 hover:scale-103">Match the flag</span>
+            <span class="hover:text-gray-700 hover:scale-103">{{ $t('games.matchTheFlag.title') }}</span>
           </router-link>
         </div>
 

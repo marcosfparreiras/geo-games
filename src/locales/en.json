@@ -3,6 +3,9 @@
     "hello": "Hello",
     "game": "Game"
   },
+  "navBar": {
+    "home": "Home"
+  },
   "games": {
     "shared": {
       "bestScoreMessage": "Your Best Score",
