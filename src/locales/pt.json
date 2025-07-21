@@ -13,7 +13,7 @@
       "seeResults": "Ver Resultados",
       "playAgain": "Jogar Novamente",
       "correct": "correto",
-      "selectCountry": "Selecione o país "
+      "selectCountry": "Selecione o país"
     },
     "matchTheFlag": {
       "title": "Acerte a Bandeira",
@@ -30,17 +30,29 @@
     "south-america": "América do Sul",
     "south-eastern-asia": "Sudeste Asiático",
     "western-europe": "Europa Ocidental",
-    "northern-europe": "Norte da Europa"
+    "central-europe": "Europa Central",
+    "northern-europe": "Norte da Europa",
+    "blue-red-white": "Azul/Vermelho/Branco",
+    "black-green-red-white": "Preto/Verde/Vermelho/Branco",
+    "green-red-white": "Verde/Vermelho/Branco",
+    "blue-yellow": "Azul/Amarelo"
   },
   "challengeYouFriends": {
     "headline": "Desafie seus amigos",
-    "questionForInvite": "Seus amigos conseguem bater seu resultado?",
-    "shareMessage": "I scored {points} on the {challengeName}. Think you can beat me? Try it here: {gameUrl}"
+    "questionForInvite": "Seus amigos conseguem bater seu resultado?"
   },
   "share": {
     "viaWhatsapp": "Compartilhe via Whatsapp",
     "copyChallengeLInk": "Copiar Link do Desafio",
     "linkCopied": "Link copiado!",
     "shareMessage": "Eu pontuei {points} no {challengeName}. \nAcha que consegue me superar? Tente aqui: {gameUrl}"
+  },
+  "challengeTypes": {
+    "perRegion": "Desafios por Regiões",
+    "perFlagStyle": "Desafios por Bandeiras Similares",
+    "perColorSet": "Desafios por Padrões de Cores",
+    "region": "Região",
+    "flagStyle": "Bandeiras Similares",
+    "colorSet": "Cores Similares"
   }
 }

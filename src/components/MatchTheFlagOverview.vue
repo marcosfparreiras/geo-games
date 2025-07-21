@@ -1,6 +1,6 @@
 <template>
   <GameOverviewPageWrapper>
-    <PageTitle>Choose a Game Mode</PageTitle>
+    <PageTitle>{{ $t('games.matchTheFlag.title') }}</PageTitle>
 
     <div v-for="groupInfo in groupsInfos" :key="groupInfo.title" class="mb-15">
       <h1 class="text-2xl font-bold mb-5">{{ groupInfo.title }}</h1>
@@ -17,14 +17,14 @@
                 <img v-else :src="mode.image" alt="" class="w-full h-40 object-cover" /> -->
 
           <div class="p-4">
-            <h2 class="text-xl font-semibold">{{ mode.name }}</h2>
+            <h2 class="text-xl font-semibold">{{ $t(`countryGroupNames.${mode.slug}`) }}</h2>
             <p class="text-gray-500 text-sm font-semibold mt-0">{{ mode.flagsUrls.length }} items</p>
-            <p class="text-gray-500 text-sm mt-2">{{ mode.category }}</p>
+            <p class="text-gray-500 text-sm mt-2">{{ $t(`challengeTypes.${mode.category}`) }}</p>
           </div>
 
           <!-- <div v-if="groupInfo.bestScore == 3" class="text-center font-semibold p-4 bg-lime-200"> -->
           <div v-if="mode.totalTries" class="flex-1 text-center font-semibold p-4 bg-lime-200">
-            Your best score: {{ mode.bestScore }}/{{ mode.flagsUrls.length }} ({{
+            {{ $t('games.shared.bestScoreMessage') }}: {{ mode.bestScore }}/{{ mode.flagsUrls.length }} ({{
               Math.floor(mode.bestScore / mode.flagsUrls.length * 100) }} %)
           </div>
         </div>
@@ -66,6 +66,8 @@ class SubGameCardInfo {
 }
 
 import { gamesInfo } from '@/utils/constants';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const topic = gamesInfo.MATCH_THE_FLAG.topic
 // const gameName = gamesInfo.MATCH_THE_FLAG.name
@@ -139,8 +141,8 @@ onMounted(() => {
   }
 
   groupsInfos.value = [
-    { title: 'Challenges per region', subGames: subGamesByRegion },
-    { title: 'Challenges per Color Set', subGames: subGamesByColourSet },
+    { title: t('challengeTypes.perRegion'), subGames: subGamesByRegion },
+    { title: t('challengeTypes.perFlagStyle'), subGames: subGamesByColourSet },
   ]
 
 })

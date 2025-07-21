@@ -1,7 +1,7 @@
 import { CountryGroup, CountryGroupCollection } from './countryGroups'
 import { countriesListCca2 } from './countriesListCca2'
 
-const categoryName = 'Region'
+const categoryName = 'region'
 const coutryGroupsByRegion = new CountryGroupCollection(categoryName)
 
 let name

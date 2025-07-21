@@ -1,6 +1,6 @@
 import { CountryGroup, CountryGroupCollection } from './countryGroups'
 
-const categoryName = 'Color Set'
+const categoryName = 'colorSet'
 const coutryGroupsByColorSet = new CountryGroupCollection(categoryName)
 
 //------------------------------------------------

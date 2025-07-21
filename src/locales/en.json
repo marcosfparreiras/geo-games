@@ -30,7 +30,12 @@
     "south-america": "South America",
     "south-eastern-asia": "South-Eastern Asia",
     "western-europe": "Western Europe",
-    "northern-europe": "Northern Europe"
+    "central-europe": "Central Europe",
+    "northern-europe": "Northern Europe",
+    "blue-red-white": "Blue-Red-White",
+    "black-green-red-white": "Black-Green-Red-White",
+    "green-red-white": "Green-Red-White",
+    "blue-yellow": "Blue-Yellow"
   },
   "challengeYouFriends": {
     "headline": "Challenge your friends",
@@ -41,5 +46,12 @@
     "copyChallengeLInk": "Copy Challenge Link",
     "linkCopied": "Link copied!",
     "shareMessage": "I scored {points} on the {challengeName}. \nThink you can beat me? Try it here: {gameUrl}"
+  },
+  "challengeTypes": {
+    "perRegion": "Challenges per region",
+    "perFlagStyle": "Challenges per Similar Flags",
+    "perColorSet": "Challenges per Color Set",
+    "region": "Region",
+    "colorSet": "Color Set"
   }
 }
