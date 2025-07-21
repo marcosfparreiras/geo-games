@@ -2,26 +2,25 @@
   <GamePageWrapper>
     <h1 @click="goToGameOverviewPage"
       class="text-2xl font-bold text-center inline-block mx-auto hover:text-gray-500 hover:cursor-pointer">
-      <!-- Match the Flags -->
-      {{ props.gameTitle }}
+      {{ $t(`${tranlationKey}.title`) }}
     </h1>
-    <h2 class="text-xl font-bold mb-4 text-center text-gray-500">{{ subGameTitle }}</h2>
+    <h2 class="text-xl font-bold mb-4 text-center text-gray-500">{{ $t(`countryGroupNames.${subGameSlug}`) }}</h2>
 
     <div class="space-y-3">
       <template v-if="totalTries">
         <div class="text-md text-gray-600 mt-2 flex justify-center  border-blue-200  space-x-2">
           <div class="border-1 w-full py-1 rounded-2xl border-green-400">
             <p>
-              🏆 <strong>Your Best Score: {{ bestScore }} / {{ total }}</strong>
+              🏆 <strong>{{ $t('games.shared.bestScoreMessage') }}: {{ bestScore }} / {{ total }}</strong>
             </p>
             <p>
-              You played {{ totalTries }} times
+              {{ $t(totalTriesTranlationKey, { totalTries: totalTries }) }}
             </p>
           </div>
 
           <div class="border-1 w-full py-1 rounded-2xl border-green-400">
             <p>
-              <strong>Your Last Score</strong>
+              <strong>{{ $t('games.shared.lastScoreMessage') }}</strong>
             </p>
             {{ lastScore }}/{{ countries.length }} ({{ Math.floor(lastScore / countries.length * 100) }} %)
           </div>
@@ -44,9 +43,9 @@
             <!-- SELECT UI (before checking answers) -->
             <select v-model="selections[index]" @change="updateAvailableOptions"
               class="flex-1 p-2 border border-gray-300 rounded">
-              <option :value="null" disabled selected>— Select Country —</option>
+              <option :value="null" disabled selected>— {{ $t('games.shared.selectCountry') }} —</option>
               <option v-for="country in availableOptions(index)" :key="country.code" :value="country.code">
-                {{ country.name }}
+                {{ getLocalizedCountryName(country, locale) }}
               </option>
             </select>
 
@@ -62,8 +61,12 @@
               'bg-green-100 border-green-400 text-green-800': selections[index] === item.code,
               'bg-red-100 border-red-400 text-red-800': selections[index] !== item.code
             }">
-              <div><strong>You picked:</strong> {{ getCountryName(selections[index]) || '—' }}</div>
-              <div><strong>Correct answer:</strong> {{ item.name }}</div>
+              <div><strong>{{ $t('games.matchTheFlag.resutYouPicked') }}:</strong> {{ getCountryName(selections[index])
+                || '—'
+              }}</div>
+              <div><strong>{{ $t('games.matchTheFlag.resutCorrectAnswer') }}:</strong> {{ getLocalizedCountryName(item,
+                locale)
+              }}</div>
             </div>
           </template>
         </div>
@@ -79,7 +82,7 @@
 
       <template v-if="!showResult">
         <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" @click="checkResult">
-          Check Answers
+          {{ $t('games.shared.checkAnswers') }}
         </button>
       </template>
 
@@ -90,10 +93,10 @@
 
         <div class="flex flex-col justify-center sm:flex-row gap-2 mt-4">
           <button @click="closeModal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
-            See Results
+            {{ $t('games.shared.seeResults') }}
           </button>
           <button @click="resetGame" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Play Again
+            {{ $t('games.shared.playAgain') }}
           </button>
 
         </div>
@@ -115,21 +118,21 @@
           ❌
         </button>
 
-        <h2 class="text-xl font-semibold mb-2">Your Score</h2>
+        <h2 class="text-xl font-semibold mb-2">{{ $t('games.shared.lastScoreMessage') }}</h2>
         <p class="text-2xl font-bold text-green-600">{{ correctCount }} / {{ total }}</p>
-        <p class="text-gray-700 mt-1">{{ percentage }}% correct</p>
+        <p class="text-gray-700 mt-1">{{ percentage }}% {{ $t('games.shared.correct') }}</p>
 
         <p class="text-sm text-gray-600 mt-1">
-          🏆 Best Score: {{ bestScore }} / {{ total }}
+          🏆 {{ $t('games.shared.bestScoreMessage') }}: {{ bestScore }} / {{ total }}
         </p>
 
         <ChallengeFriends :shareMessage="shareMessage" />
         <div class="flex flex-col justify-center sm:flex-row gap-2 mt-4">
           <button @click="closeModal" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">
-            See Results
+            {{ $t('games.shared.seeResults') }}
           </button>
           <button @click="resetGame" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            Play Again
+            {{ $t('games.shared.playAgain') }}
           </button>
         </div>
 
@@ -139,7 +142,7 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import GamePageWrapper from './GamePageWrapper.vue'
 import ChallengeFriends from './ChallengeFriends.vue'
 
@@ -149,7 +152,11 @@ import { GameStats } from '@/utils/gameStats'
 
 import LocalStorageDB from '@/utils/localStorageDB'
 
+import { cca2ListToFlagEmojiString } from '@/utils/utils';
 
+// Needed to see when language changed
+import { useI18n } from 'vue-i18n';
+const { locale, t } = useI18n();
 
 const router = useRouter()
 
@@ -157,21 +164,72 @@ const props = defineProps({
   countries: Array, // List of CountryData
   topic: String,
   gameSlug: String,
-  gameTitle: String,
   subGameSlug: String,
-  subGameTitle: String,
-  subGameShareName: String,
   gameUrl: String
 })
+
+// Example: update some content when locale changes
+const updateLocalizedData = () => {
+  // console.log(`Language changed to: ${locale.value}`);
+  subGameShareName.value = setSubGameShareName()
+};
+
+watch(locale, () => {
+  updateLocalizedData();
+});
+
+const maxFlagsLength = 6
+const cca2List = props.countries.map((countryData) => countryData.code)
+const emojiFlags = cca2ListToFlagEmojiString(cca2List, maxFlagsLength)
+
+
+const subGameShareName = ref('')
+
+// Call it initially too
+updateLocalizedData();
+// console.log(subGameShareName.value)
+
+function setSubGameShareName() {
+  const challengeName = t(`games.${props.gameSlug}.challengeName`)
+  const groupName = t(`countryGroupNames.${props.subGameSlug}`)
+  return `${challengeName} | ${groupName} ${emojiFlags}`
+}
+
+// Message used to share game with friends
+const shareMessage = computed(() => {
+  const points = `${lastScore.value}/${gameSize}`
+  const message = t('share.shareMessage', { points: points, challengeName: subGameShareName.value, gameUrl: props.gameUrl })
+
+  return message
+})
+
+
+
+const tranlationKey = `games.${props.gameSlug}`
+
+function getLocalizedCountryName(country, language) {
+  return country.nameTranslations[language].common
+}
+
+
+// const countryNameTranlated = computed
+
 
 const localStorageDB = new LocalStorageDB()
 const localStorageKey = localStorageDB.buildSubGameKey(props.topic, props.gameSlug, props.subGameSlug)
 
+
 // This varaible will hold the statistics of the game
 let gameStats = new GameStats()
 
-const sortedCountries = ref([...props.countries].sort((a, b) =>
-  a.name.localeCompare(b.name)
+const sortedCountries = ref([...props.countries].sort((a, b) => {
+  // a.name.localeCompare(b.name)
+  // console.log('test')
+  // console.log(locale.value)
+  // console.log(getLocalizedCountryName(a, locale.value))
+  getLocalizedCountryName(a, locale.value).localeCompare(getLocalizedCountryName(b, locale.value))
+}
+  // a.name.localeCompare(b.name)
 ))
 
 // Define variables that will use local storage persistency
@@ -179,6 +237,14 @@ const bestScore = ref(0)
 const lastScore = ref(0)
 const totalTries = ref(0)
 const gameSize = props.countries.length
+
+const totalTriesTranlationKey = computed(() => {
+  if (totalTries.value == 1) {
+    return 'games.shared.playedTimesMessageSingular'
+  } else {
+    return 'games.shared.playedTimesMessagePlural'
+  }
+})
 
 onMounted(() => {
   const gameStatsStored = localStorageDB.get(localStorageKey)
@@ -207,12 +273,6 @@ const checkResult = () => {
 
 }
 
-// Message used to share game with friends
-const shareMessage = computed(() => {
-  const message = `I scored ${correctCount.value}/${total.value} on the ${props.subGameShareName}.
-Think you can beat me? Try it here: ${props.gameUrl}`
-  return message
-})
 
 // Shuffle array
 function shuffle(array) {
@@ -301,7 +361,8 @@ const closeModal = () => {
 
 const getCountryName = (code) => {
   const match = props.countries.find((c) => c.code === code)
-  return match ? match.name : null
+  // return match ? match.name : null
+  return match ? getLocalizedCountryName(match, locale.value) : null
 }
 
 const resetGame = () => {

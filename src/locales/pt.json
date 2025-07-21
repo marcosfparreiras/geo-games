@@ -1,0 +1,46 @@
+{
+  "message": {
+    "hello": "Hello",
+    "game": "Game"
+  },
+  "games": {
+    "shared": {
+      "bestScoreMessage": "Seu melhor resultado",
+      "lastScoreMessage": "Seu último resultado",
+      "playedTimesMessageSingular": "Você jogou {totalTries} vez",
+      "playedTimesMessagePlural": "Você jogou {totalTries} vezes",
+      "checkAnswers": "Verificar Respostas",
+      "seeResults": "Ver Resultados",
+      "playAgain": "Jogar Novamente",
+      "correct": "correto",
+      "selectCountry": "Selecione o país "
+    },
+    "matchTheFlag": {
+      "title": "Acerte a Bandeira",
+      "challengeName": "Desafio @:games.matchTheFlag.title",
+      "resutYouPicked": "Você escolheu",
+      "resutCorrectAnswer": "Resposta correta"
+    }
+  },
+  "countryRegions": {
+    "balkans": "Balcãs"
+  },
+  "countryGroupNames": {
+    "balkans": "Balcãs",
+    "south-america": "América do Sul",
+    "south-eastern-asia": "Sudeste Asiático",
+    "western-europe": "Europa Ocidental",
+    "northern-europe": "Norte da Europa"
+  },
+  "challengeYouFriends": {
+    "headline": "Desafie seus amigos",
+    "questionForInvite": "Seus amigos conseguem bater seu resultado?",
+    "shareMessage": "I scored {points} on the {challengeName}. Think you can beat me? Try it here: {gameUrl}"
+  },
+  "share": {
+    "viaWhatsapp": "Compartilhe via Whatsapp",
+    "copyChallengeLInk": "Copiar Link do Desafio",
+    "linkCopied": "Link copiado!",
+    "shareMessage": "Eu pontuei {points} no {challengeName}. \nAcha que consegue me superar? Tente aqui: {gameUrl}"
+  }
+}

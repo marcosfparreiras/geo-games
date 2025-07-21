@@ -1,0 +1,45 @@
+{
+  "message": {
+    "hello": "Hello",
+    "game": "Game"
+  },
+  "games": {
+    "shared": {
+      "bestScoreMessage": "Your Best Score",
+      "lastScoreMessage": "Your Last Score",
+      "playedTimesMessageSingular": "You played {totalTries} time",
+      "playedTimesMessagePlural": "You played {totalTries} times",
+      "checkAnswers": "Check Answers",
+      "seeResults": "See Results",
+      "playAgain": "Play Again",
+      "correct": "correct",
+      "selectCountry": "Select Country"
+    },
+    "matchTheFlag": {
+      "title": "Match the Flag",
+      "challengeName": "@:games.matchTheFlag.title Challenge",
+      "resutYouPicked": "You picked",
+      "resutCorrectAnswer": "Correct Answer"
+    }
+  },
+  "countryRegions": {
+    "balkans": "Balkans"
+  },
+  "countryGroupNames": {
+    "balkans": "Balkans",
+    "south-america": "South America",
+    "south-eastern-asia": "South-Eastern Asia",
+    "western-europe": "Western Europe",
+    "northern-europe": "Northern Europe"
+  },
+  "challengeYouFriends": {
+    "headline": "Challenge your friends",
+    "questionForInvite": "Can your friends beat your score?"
+  },
+  "share": {
+    "viaWhatsapp": "Share via Whatsapp",
+    "copyChallengeLInk": "Copy Challenge Link",
+    "linkCopied": "Link copied!",
+    "shareMessage": "I scored {points} on the {challengeName}. \nThink you can beat me? Try it here: {gameUrl}"
+  }
+}
