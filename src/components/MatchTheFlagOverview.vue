@@ -3,7 +3,7 @@
     <PageTitle>{{ $t('games.matchTheFlag.title') }}</PageTitle>
 
     <div v-for="groupInfo in groupsInfos" :key="groupInfo.title" class="mb-15">
-      <h1 class="text-2xl font-bold mb-5">{{ groupInfo.title }}</h1>
+      <h1 :id="groupInfo.slug" class="text-2xl font-bold mb-5">{{ groupInfo.title }}</h1>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="mode in groupInfo.subGames" :key="mode.slug" @click="selectMode(mode)"
           class="flex flex-col bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer overflow-hidden hover:scale-105">
@@ -141,8 +141,8 @@ onMounted(() => {
   }
 
   groupsInfos.value = [
-    { title: t('challengeTypes.perRegion'), subGames: subGamesByRegion },
-    { title: t('challengeTypes.perFlagStyle'), subGames: subGamesByColourSet },
+    { title: t('challengeTypes.perRegion'), subGames: subGamesByRegion, slug: 'perRegion' },
+    { title: t('challengeTypes.perFlagStyle'), subGames: subGamesByColourSet, slug: 'perFlagStyle' },
   ]
 
 })

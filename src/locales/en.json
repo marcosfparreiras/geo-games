@@ -55,6 +55,14 @@
     "perFlagStyle": "Challenges per Similar Flags",
     "perColorSet": "Challenges per Color Set",
     "region": "Region",
+    "flagStyle": "Flag Style",
     "colorSet": "Color Set"
+  },
+  "recommendations": {
+    "title": "Other games you might like!",
+    "matchTheFlag": {
+      "byRegion": "@:games.matchTheFlag.title per @:challengeTypes.region",
+      "byFlagType": "@:games.matchTheFlag.title per @:challengeTypes.flagStyle"
+    }
   }
 }

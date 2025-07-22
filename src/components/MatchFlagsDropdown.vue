@@ -100,6 +100,9 @@
           </button>
 
         </div>
+        <div class="mt-10">
+          <RecommendedGames :games="recommendedGamesList" />
+        </div>
       </template>
     </div>
 
@@ -136,6 +139,8 @@
           </button>
         </div>
 
+        <RecommendedGames :games="recommendedGamesList" />
+
       </div>
     </div>
   </GamePageWrapper>
@@ -145,14 +150,14 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import GamePageWrapper from './GamePageWrapper.vue'
 import ChallengeFriends from './ChallengeFriends.vue'
+import RecommendedGames from './RecommendedGames.vue'
 
 import { useRouter } from 'vue-router'
-
 import { GameStats } from '@/utils/gameStats'
+import { cca2ListToFlagEmojiString } from '@/utils/utils';
 
 import LocalStorageDB from '@/utils/localStorageDB'
-
-import { cca2ListToFlagEmojiString } from '@/utils/utils';
+import { highLevelMatchTheFlagRecommendations } from '@/utils/recommendedGamesLists'
 
 // Needed to see when language changed
 import { useI18n } from 'vue-i18n';
@@ -167,6 +172,8 @@ const props = defineProps({
   subGameSlug: String,
   gameUrl: String
 })
+
+const recommendedGamesList = highLevelMatchTheFlagRecommendations
 
 // Example: update some content when locale changes
 const updateLocalizedData = () => {

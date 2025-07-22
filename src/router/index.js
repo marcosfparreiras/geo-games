@@ -52,6 +52,18 @@ const router = createRouter({
     //   component: () => import('../views/AboutView.vue'),
     // },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      }
+    } else if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  },
 })
 
 export default router

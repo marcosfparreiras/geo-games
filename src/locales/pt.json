@@ -57,5 +57,12 @@
     "region": "Região",
     "flagStyle": "Bandeiras Similares",
     "colorSet": "Cores Similares"
+  },
+  "recommendations": {
+    "title": "Outros jogos que você pode gostar!",
+    "matchTheFlag": {
+      "byRegion": "@:games.matchTheFlag.title por @:challengeTypes.region",
+      "byFlagType": "@:games.matchTheFlag.title por @:challengeTypes.flagStyle"
+    }
   }
 }
