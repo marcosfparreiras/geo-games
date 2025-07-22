@@ -1,9 +1,14 @@
 <template>
-  <ResponsiveNavBarTemplate :navBarElements="navBarElements" />
+  <ResponsiveNavBarTemplate :navBarElements="navBarElements">
+    <template v-slot:languageSetComponent>
+      <LanguageSelect />
+    </template>
+  </ResponsiveNavBarTemplate>
 </template>
 
 <script setup>
 import ResponsiveNavBarTemplate from './ResponsiveNavBarTemplate.vue';
+import LanguageSelect from './LanguageSelect.vue';
 
 // import { useI18n } from 'vue-i18n'
 // const { t } = useI18n()

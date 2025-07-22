@@ -1,31 +1,42 @@
 <template>
   <!-- <header class="max-w-3xlbg-white bg-gray-900 text-white shadow-md"> -->
   <header class="bg-white text-gray-800 shadow-md">
-    <div class="max-w-4xl h-20 mx-auto flex items-center justify-between px-5">
+    <div class="max-w-screen-xl h-20 mx-auto flex items-center justify-between px-5">
       <div class="text-xl">
-        The Logo
+        <span class="text-3xl text-blue-900 font-extrabold italic ">N</span><span
+          class="text-2xl text-gray-500 font-mono">quizzes</span>
       </div>
 
-      <!-- Navigation for Desktop -->
-      <nav aria-label="Main Menu for Desktop" class="hidden md:flex  space-x-4">
-        <div v-for="(navBarElement, index) in navBarElements" :key="index">
-          <router-link :to="navBarElement.routerLinkParams"
-            class="p-3 hover:bg-orange-500 hover:text-white hover:font-semibold rounded ">
-            <span class="text-lg font-semibold">{{ navBarElement.text }}</span>
-          </router-link>
+      <div class="flex">
+        <!-- Navigation for Desktop -->
+        <nav aria-label="Main Menu for Desktop" class="hidden lg:flex space-x-4">
+          <div v-for="(navBarElement, index) in navBarElements" :key="index">
+            <router-link :to="navBarElement.routerLinkParams"
+              class="p-3 hover:bg-orange-500 hover:text-white hover:font-semibold rounded ">
+              <span class="text-lg font-semibold">{{ navBarElement.text }}</span>
+            </router-link>
+          </div>
+        </nav>
+        <div class="flex items-center px-4 pl-7 ">
+          <!-- Slot for language set component -->
+          <slot name="languageSetComponent"></slot>
+
+          <!-- Button having either sandwich or close icon, depending on menu open state -->
+          <div class="lg:hidden pl-5">
+            <button aria-label="Open Menu" @click="mobileMenuOpen = !mobileMenuOpen"
+              class="text-gray-600 hover:text-blue-600 focus:outline-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16" />
+                <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
-      </nav>
-      <!-- Button having either sandwich or close icon, depending on menu open state -->
-      <div class="md:hidden">
-        <button aria-label="Open Menu" @click="mobileMenuOpen = !mobileMenuOpen"
-          class="text-gray-600 hover:text-blue-600 focus:outline-none">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path v-if="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16" />
-            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+
       </div>
+
     </div>
     <div>
       <!-- Navigation for Mobile: only expanded once sandwich icon is pressed (only visible on small screens) -->
