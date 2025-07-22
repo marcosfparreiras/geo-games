@@ -7,14 +7,22 @@ const messages = {
   pt,
 }
 
+const supportedLangs = Object.keys(messages)
+
 // Load saved language or fallback to browser default
 const savedLang = localStorage.getItem('lang')
 const browserLang = navigator.language.split('-')[0]
 const fallbackLang = 'en'
 
+const activeLang = supportedLangs.includes(savedLang)
+  ? savedLang
+  : supportedLangs.includes(browserLang)
+    ? browserLang
+    : fallbackLang
+
 const i18n = createI18n({
   legacy: false,
-  locale: messages[savedLang || browserLang] ? savedLang || browserLang : fallbackLang,
+  locale: activeLang,
   fallbackLocale: fallbackLang,
   messages,
 })
