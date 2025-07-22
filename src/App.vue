@@ -1,11 +1,9 @@
 <script setup>
-import NavBar from './components/NavBar.vue';
+import ResponsiveNavBar from './components/ResponsiveNavBar.vue';
 </script>
 
 <template>
-  <header>
-    <NavBar />
-  </header>
+  <ResponsiveNavBar />
 
   <RouterView />
 </template>
